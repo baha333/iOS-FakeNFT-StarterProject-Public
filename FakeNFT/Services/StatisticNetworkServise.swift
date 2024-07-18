@@ -1,7 +1,6 @@
 import Foundation
 
-
-final class StatisticNetworkServise {
+final class StatisticNetworkService {
     // MARK: - Public Properties
     
     // MARK: - Private Properties

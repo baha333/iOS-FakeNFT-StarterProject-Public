@@ -10,7 +10,7 @@ class StatisticViewController: UIViewController {
     private let sortButton = UIButton()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var users = Users()
-    private let statisticNetworkServise = StatisticNetworkServise()
+    private let statisticNetworkService = StatisticNetworkService()
     private let titleAlert = NSLocalizedString("Statistic.sortAlert.title", comment: "")
     private let sortByName = NSLocalizedString("Statistic.sortAlert.name", comment: "")
     private let sortByRating = NSLocalizedString("Statistic.sortAlert.rating", comment: "")
@@ -99,7 +99,7 @@ class StatisticViewController: UIViewController {
     
     private func reloadUsers() {
         ProgressHUD.show()
-        statisticNetworkServise.fetchUsers() { [weak self] result in
+        statisticNetworkService.fetchUsers() { [weak self] result in
             switch result {
             case .success(let users):
                 self?.users = users
