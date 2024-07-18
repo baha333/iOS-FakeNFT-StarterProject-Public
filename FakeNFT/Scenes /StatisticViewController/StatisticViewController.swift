@@ -3,7 +3,7 @@ import ProgressHUD
 
 class StatisticViewController: UIViewController {
     
-    // MARK: - Public Properties
+    // MARK: - Public Properties  
     let servicesAssembly: ServicesAssembly
     
     // MARK: - Private Properties
