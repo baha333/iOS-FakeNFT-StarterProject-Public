@@ -2,8 +2,11 @@ import Foundation
 import UIKit
 
 final class SpecialRatingView: UIViewController {
-    //MARK: - Public Properties
-    var imageViewArray: [UIImageView] = [UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar"))]
+    // MARK: - Public Properties
+    let noActiveStarImage = UIImage(named: "noActiveStar")
+    lazy var imageViewArray: [UIImageView] = {
+        return [UIImageView](repeating: UIImageView(image: self.noActiveStarImage), count: 5)
+    }()
     
     // MARK: - Private Properties
     private lazy var stackView: UIStackView = {
@@ -14,12 +17,13 @@ final class SpecialRatingView: UIViewController {
         return stackView
     }()
     
-    //MARK:  - Lifecycle
+    // MARK:  - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         customizingTheLayoutOfScreenElements()
     }
+    
     // MARK: - Public Methods
     func ratingVisualization(rating: Int) {
         for i in 0..<5 {
@@ -33,6 +37,7 @@ final class SpecialRatingView: UIViewController {
             }
         }
     }
+    
     // MARK: - Private Methods
     private func customizingTheLayoutOfScreenElements() {
         view.addSubview(stackView)
