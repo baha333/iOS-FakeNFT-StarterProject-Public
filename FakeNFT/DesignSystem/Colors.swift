@@ -64,4 +64,12 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
+    
+    static let blackDay = UIColor(hexString: "#1A1B22")
+    
+    static let lightGrayDay = UIColor(hexString: "#F7F7F8")
+    
+    static let greenUniversal = UIColor(hexString: "#1C9F00")
+    
+    static let redUniversal = UIColor(hexString: "#F56B6C")
 }

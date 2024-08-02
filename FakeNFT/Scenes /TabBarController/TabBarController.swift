@@ -9,6 +9,12 @@ final class TabBarController: UITabBarController {
         image: UIImage(systemName: "square.stack.3d.up.fill"),
         tag: 0
     )
+    
+    private let basketTabBarItem = UITabBarItem(
+        title: "Корзина",
+        image: UIImage(named: "basket"),
+        tag: 1
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,8 +23,14 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
+        
+        let basketPresenter = BasketPresenter()
+        let basketController = BasketViewController(presenter: basketPresenter)
+        basketPresenter.viewController = basketController
+        let basketNavController = UINavigationController(rootViewController: basketController)
+        basketController.tabBarItem = basketTabBarItem
 
-        viewControllers = [catalogController]
+        viewControllers = [catalogController, basketNavController]
 
         view.backgroundColor = .systemBackground
     }
