@@ -72,4 +72,6 @@ extension UIColor {
     static let greenUniversal = UIColor(hexString: "#1C9F00")
     
     static let redUniversal = UIColor(hexString: "#F56B6C")
+    
+    static let blueUniversal = UIColor(hexString: "#0A84FF")
 }

@@ -29,8 +29,15 @@ final class CurrencyViewCell: UICollectionViewCell {
         return label
     }()
     
+    override var isSelected: Bool {
+        didSet {
+            layer.borderWidth = isSelected ? 1 : 0
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupCell()
     }
     
     required init?(coder: NSCoder) {
@@ -58,6 +65,7 @@ private extension CurrencyViewCell {
         backgroundColor = .lightGrayDay
         layer.cornerRadius = 12
         layer.masksToBounds = true
+        layer.borderColor = UIColor.blackDay.cgColor
     }
     
     func addSubviews() {
