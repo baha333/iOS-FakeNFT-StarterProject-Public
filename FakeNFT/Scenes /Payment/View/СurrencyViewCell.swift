@@ -5,11 +5,14 @@ final class CurrencyViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "CurrencyViewCell"
     
+    var id: String?
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .blackDay
         return imageView
     }()
     
@@ -48,8 +51,9 @@ final class CurrencyViewCell: UICollectionViewCell {
         if let url = URL(string: currency.image) {
             imageView.kf.setImage(with: url)
         }
-        name.text = currency.name
-        title.text = currency.title
+        name.text = currency.title
+        title.text = currency.name
+        id = currency.id
     }
 }
 

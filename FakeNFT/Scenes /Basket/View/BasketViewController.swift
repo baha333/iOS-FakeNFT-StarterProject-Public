@@ -166,10 +166,13 @@ private extension BasketViewController {
     }
     
     func showPaymentViewController() {
-        let paymentViewController = PaymentViewController()
+        let paymentPresenter = PaymentPresenter()
+        let paymentViewController = PaymentViewController(presenter: paymentPresenter)
         paymentViewController.modalPresentationStyle = .overCurrentContext
         paymentViewController.modalTransitionStyle = .crossDissolve
         paymentViewController.hidesBottomBarWhenPushed = true
+        
+        paymentPresenter.viewController = paymentViewController
         navigationController?.pushViewController(paymentViewController, animated: true)
     }
 }

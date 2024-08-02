@@ -46,36 +46,44 @@ final class PaymentViewController: UIViewController {
         return button
     }()
     
-    private var currencies: [CurrencyModel] = [
-        CurrencyModel(
-            id: "123",
-            name: "123",
-            title: "123",
-            image: "https://img.freepik.com/free-photo/adorable-illustration-kittens-playing-forest-generative-ai_260559-483.jpg?t=st%3D1722606933~exp%3D1722610533~hmac%3Db3d59a60686619eb9b186e51f382bb81fe40311368904a0181faae43bc1f5e1d&w=1060"
-        ),
-        CurrencyModel(
-            id: "123",
-            name: "123",
-            title: "123",
-            image: "https://img.freepik.com/free-photo/adorable-illustration-kittens-playing-forest-generative-ai_260559-483.jpg?t=st%3D1722606933~exp%3D1722610533~hmac%3Db3d59a60686619eb9b186e51f382bb81fe40311368904a0181faae43bc1f5e1d&w=1060"
-        ),
-        CurrencyModel(
-            id: "123",
-            name: "123",
-            title: "123",
-            image: "https://img.freepik.com/free-photo/adorable-illustration-kittens-playing-forest-generative-ai_260559-483.jpg?t=st%3D1722606933~exp%3D1722610533~hmac%3Db3d59a60686619eb9b186e51f382bb81fe40311368904a0181faae43bc1f5e1d&w=1060"
-        ),
-        CurrencyModel(
-            id: "123",
-            name: "123",
-            title: "123",
-            image: "https://img.freepik.com/free-photo/adorable-illustration-kittens-playing-forest-generative-ai_260559-483.jpg?t=st%3D1722606933~exp%3D1722610533~hmac%3Db3d59a60686619eb9b186e51f382bb81fe40311368904a0181faae43bc1f5e1d&w=1060"
-        )
-    ]
+    private var currencies: [CurrencyModel] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    private let presenter: PaymentPresenter
+    private var selectedCurrencyId: String?
+    
+    init(presenter: PaymentPresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
+    }
+    
+    func setup(currencies: [CurrencyModel]) {
+        self.currencies = currencies
+    }
+    
+    func showErrorAlert() {
+        let alert = UIAlertController(title: "Не удалось произвести оплату", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Отмена", style: .default))
+        alert.addAction(UIAlertAction(title: "Повторить", style: .cancel, handler: { [weak self] _ in
+            self?.payDidTap()
+        }))
+        present(alert, animated: true)
+    }
+    
+    func successPay() {
+        navigationController?.pushViewController(SuccessViewController(), animated: true)
     }
 }
 
@@ -86,6 +94,7 @@ private extension PaymentViewController {
         activateConstraints()
         setupNavBar()
         addActions()
+        presenter.getInfo()
     }
     
     func addSubviews() {
@@ -139,11 +148,16 @@ private extension PaymentViewController {
     
     @objc
     func payDidTap() {
-        navigationController?.pushViewController(SuccessViewController(), animated: true)
+        guard let selectedCurrencyId else { return }
+        presenter.payWithCurrency(id: selectedCurrencyId)
     }
 }
 
 extension PaymentViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedCurrencyId = currencies[indexPath.row].id
+    }
     
     func collectionView(
             _ collectionView: UICollectionView,

@@ -1,7 +1,6 @@
 import Foundation
 
-
-struct CurrencyModel {
+struct CurrencyModel: Decodable {
     let id: String
     let name: String
     let title: String

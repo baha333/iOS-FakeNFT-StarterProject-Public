@@ -9,6 +9,7 @@ final class SuccessViewController: UIViewController {
         let label = UILabel()
         label.text = "Успех! Оплата прошла, поздравляем с покупкой!"
         label.numberOfLines = 0
+        label.textAlignment = .center
         label.font = .systemFont(ofSize: 22, weight: .bold)
         return label
     }()
