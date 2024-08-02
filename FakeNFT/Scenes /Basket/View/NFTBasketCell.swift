@@ -3,9 +3,17 @@ import UIKit
 
 final class NFTBasketCell: UITableViewCell {
     
+    static let reuseIdentifier = "NFTBasketCell"
+    
+    private var deleteNftAction: ((String) -> ())?
+    
+    private var id: String?
+    
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -38,24 +46,33 @@ final class NFTBasketCell: UITableViewCell {
         return button
     }()
     
-    func setup(
-        imageUrl: URL,
-        name: String,
-        rating: Int,
-        price: Double
-    ) {
-        nftImageView.kf.setImage(with: imageUrl)
-        nameLabel.text = name
-        ratingView.setup(count: rating)
-        priceLabel.text = String(format: "%.2f", price)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup(nft: NFTBasketModel, deleteNftAction: @escaping (String) -> ()) {
+        id = nft.id
+        nftImageView.kf.setImage(with: nft.imageUrl)
+        nameLabel.text = nft.name
+        ratingView.setup(count: nft.rating)
+        priceLabel.text = String(format: "%.2f", nft.price) + " ETH"
+        self.deleteNftAction = deleteNftAction
     }
 }
 
 private extension NFTBasketCell {
     
-    func setup() {
+    func setupCell() {
+        selectionStyle = .none
         addSubviews()
         activateConstraints()
+        addActions()
     }
     
     func addSubviews() {
@@ -75,6 +92,8 @@ private extension NFTBasketCell {
     func activateConstraints() {
         let container = UILayoutGuide()
         let infoContainer = UILayoutGuide()
+        contentView.addLayoutGuide(container)
+        contentView.addLayoutGuide(infoContainer)
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 140),
@@ -85,6 +104,8 @@ private extension NFTBasketCell {
             nftImageView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             nftImageView.topAnchor.constraint(equalTo: container.topAnchor),
             nftImageView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            nftImageView.widthAnchor.constraint(equalTo: nftImageView.heightAnchor, multiplier: 1),
+            nftImageView.heightAnchor.constraint(equalToConstant: 108),
             infoContainer.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
             infoContainer.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8),
             infoContainer.leadingAnchor.constraint(equalTo: nftImageView.trailingAnchor, constant: 20),
@@ -107,5 +128,15 @@ private extension NFTBasketCell {
             priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: infoContainer.trailingAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: infoContainer.bottomAnchor)
         ])
+    }
+    
+    func addActions() {
+        removeButton.addTarget(self, action: #selector(Self.deleteNft), for: .touchUpInside)
+    }
+    
+    @objc
+    func deleteNft() {
+        guard let id else { return }
+        deleteNftAction?(id)
     }
 }

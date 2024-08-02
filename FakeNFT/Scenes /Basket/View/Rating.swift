@@ -5,11 +5,11 @@ final class Rating: UIView {
     
     private lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
-            UIImageView(image: UIImage(named: "rating_star")),
-            UIImageView(image: UIImage(named: "rating_star")),
-            UIImageView(image: UIImage(named: "rating_star")),
-            UIImageView(image: UIImage(named: "rating_star")),
-            UIImageView(image: UIImage(named: "rating_star"))
+            UIImageView(),
+            UIImageView(),
+            UIImageView(),
+            UIImageView(),
+            UIImageView()
         ])
         stack.spacing = 2
         stack.distribution = .equalSpacing
@@ -17,6 +17,7 @@ final class Rating: UIView {
     }()
     
     init() {
+        super.init(frame: .zero)
         initialize()
     }
     
@@ -31,9 +32,9 @@ final class Rating: UIView {
             guard let imageView = view as? UIImageView else { return }
             
             if index < normalCount {
-                imageView.tintColor = UIColor(hexString: "#FEEF0D")
+                imageView.image = UIImage(named: "rating_star_active")
             } else {
-                imageView.tintColor = UIColor(hexString: "#F7F7F8")
+                imageView.image = UIImage(named: "rating_star_no_active")
             }
         }
     }

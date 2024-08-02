@@ -24,10 +24,13 @@ final class TabBarController: UITabBarController {
         )
         catalogController.tabBarItem = catalogTabBarItem
         
-        let basketController = BasketViewController()
+        let basketPresenter = BasketPresenter()
+        let basketController = BasketViewController(presenter: basketPresenter)
+        basketPresenter.viewController = basketController
+        let basketNavController = UINavigationController(rootViewController: basketController)
         basketController.tabBarItem = basketTabBarItem
 
-        viewControllers = [catalogController, basketController]
+        viewControllers = [catalogController, basketNavController]
 
         view.backgroundColor = .systemBackground
     }
