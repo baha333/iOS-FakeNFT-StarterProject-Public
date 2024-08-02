@@ -1,5 +1,5 @@
 import Foundation
-
+import ProgressHUD
 
 final class BasketPresenter {
     
@@ -28,6 +28,7 @@ final class BasketPresenter {
             castResponseToModel(nft: $0)
         }
         viewController?.setup(nftList: nfts, countNft: countNFT, sumNft: sumNFTString)
+        ProgressHUD.dismiss()
     }
     
     private func castResponseToModel(nft: BasketNFTModelResponse) -> NFTBasketModel? {
@@ -42,6 +43,7 @@ final class BasketPresenter {
     }
     
     func getInfo() {
+        ProgressHUD.show()
         nftService.loadOrder { [weak self] result in
             switch result {
             case .success(let basket):
@@ -83,7 +85,7 @@ final class BasketPresenter {
     
     func removeNftBy(id: String) {
         let nfts = nftList.map({ $0.id }).filter { $0 != id }
-        print("1234")
+        ProgressHUD.show()
         nftService.updateOrder(nfts: nfts) { [weak self] result in
             switch result {
             case .success(let basket):
