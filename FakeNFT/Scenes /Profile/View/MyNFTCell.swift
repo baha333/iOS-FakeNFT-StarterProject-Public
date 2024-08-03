@@ -1,5 +1,5 @@
-import Foundation
 import UIKit
+import Kingfisher
 
 final class MyNFTCell: UITableViewCell {
     
@@ -61,11 +61,12 @@ final class MyNFTCell: UITableViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.tintColor = UIColor(named: "ypWhite")
-        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Private Properties
+    private var id: String?
+    
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 35
@@ -77,7 +78,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var fromStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 4
-        stackView.distribution = .equalCentering
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -118,31 +119,35 @@ final class MyNFTCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Action
-    @objc func tapLikeButton() {
-        print("Кнопка likeButton работает")
-    }
+//    //MARK: - Action
+
     
     // MARK: - Public Methods
-    func changingNFT(image: String, name: String, rating: Int, price: String, holder: String) {
-        nftImage.image = UIImage(named: image)
-        nameLabel.text = name
-        ratingImage.ratingVisualization(rating: rating)
-        ethLabel.text = price
-        holderLabel.text = holder
+    func changingNFT(nft: NFT) {
+        
+        if let nftImageURLString = nft.images.first,
+           let nftImageURL = URL(string: nftImageURLString) {
+            nftImage.kf.setImage(with: nftImageURL)
+        } else {
+            nftImage.image = UIImage(named: "avatar")
+        }
+        nameLabel.text = nft.name
+        ratingImage.ratingVisualization(rating: nft.rating)
+        ethLabel.text = String(format: "%.2f", nft.price) + " ETH"
+        holderLabel.text = nft.author
     }
     
     // MARK: - Private Methods
     private func customizingScreenElements() {
-        [nftImage, infoStackView, likeButton].forEach {contentView.addSubview($0)}
-        [nameStackView, priceStackView].forEach {infoStackView.addArrangedSubview($0)}
+        [nftImage, infoStackView, likeButton, priceStackView].forEach {contentView.addSubview($0)}
+        [nameStackView].forEach {infoStackView.addArrangedSubview($0)}
         [priceLabel, ethLabel].forEach {priceStackView.addArrangedSubview($0)}
         [nameLabel, ratingImage.view, fromStackView].forEach {nameStackView.addArrangedSubview($0)}
         [fromLabel, holderLabel].forEach {fromStackView.addArrangedSubview($0)}
     }
     
     private func customizingTheLayoutOfScreenElements() {
-        [nftImage, infoStackView, likeButton].forEach {$0.translatesAutoresizingMaskIntoConstraints = false}
+        [nftImage, infoStackView, likeButton, priceStackView, fromStackView, nameLabel].forEach {$0.translatesAutoresizingMaskIntoConstraints = false}
         
         NSLayoutConstraint.activate([
             nftImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -159,6 +164,13 @@ final class MyNFTCell: UITableViewCell {
             likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor),
             likeButton.heightAnchor.constraint(equalToConstant: 40),
             likeButton.widthAnchor.constraint(equalToConstant: 40),
+            
+            priceStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            priceStackView.trailingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
+            priceStackView.topAnchor.constraint(equalTo: infoStackView.topAnchor, constant: 10),
+            
+            fromStackView.widthAnchor.constraint(equalToConstant: 58),
+            nameLabel.widthAnchor.constraint(equalToConstant: 78)
         ])
     }
 }

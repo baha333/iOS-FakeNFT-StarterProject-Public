@@ -1,5 +1,5 @@
-import Foundation
 import UIKit
+import Kingfisher
 
 final class FavoritesNFTCell: UICollectionViewCell {
     // MARK: - Public Properties
@@ -37,11 +37,12 @@ final class FavoritesNFTCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.tintColor = UIColor(named: "ypRedUn")
-        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Private Properties
+    private var id: String?
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -72,19 +73,25 @@ final class FavoritesNFTCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     //MARK: - Action
-    @objc func tapLikeButton() {
-        print("Кнопка likeButton работает")
-    }
+
     
     // MARK: - Public Methods
-    func changingNFT(image: String, name: String, rating: Int, price: String) {
-        nftImage.image = UIImage(named: image)
-        nameLabel.text = name
-        ratingImage.ratingVisualization(rating: rating)
-        ethLabel.text = price
+    func changingNFT(nft: NFT) {
+        if let nftImageURLString = nft.images.first,
+           let nftImageURL = URL(string: nftImageURLString) {
+            nftImage.kf.setImage(with: nftImageURL)
+        } else {
+            nftImage.image = UIImage(named: "avatar_icon")
+        }
+        
+        nameLabel.text = nft.name
+        ratingImage.ratingVisualization(rating: nft.rating)
+        ethLabel.text = String(format: "%.2f", nft.price) + " ETH"
+        id = nft.id
     }
+    
     
     // MARK: - Private Methods
     private func customizingScreenElements() {
