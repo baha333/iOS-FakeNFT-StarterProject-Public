@@ -5,9 +5,13 @@ final class BasketPresenter {
     
     weak var viewController: BasketViewController?
     private let nftService: NftService
+    private var basketSortStorage: BasketSortStorage
     
-    init(nftService: NftService = NftServiceImpl(networkClient: DefaultNetworkClient(), storage: NftStorageImpl())) {
+    init(nftService: NftService = NftServiceImpl(networkClient: DefaultNetworkClient(), storage: NftStorageImpl()),
+         basketSortStorage: BasketSortStorage = BasketSortStorage()
+    ) {
         self.nftService = nftService
+        self.basketSortStorage = basketSortStorage
     }
     
     private var basket: BasketModel? = nil {
@@ -24,9 +28,19 @@ final class BasketPresenter {
             sum + item.price
         })
         let sumNFTString = String(format: "%.2f", sumNFT) + " ETH"
-        let nfts = nftList.compactMap {
+        var nfts = nftList.compactMap {
             castResponseToModel(nft: $0)
         }
+        
+        switch basketSortStorage.basketSortType {
+        case .price:
+            nfts.sort(by: { $0.price < $1.price })
+        case .rating:
+            nfts.sort(by: { $0.rating < $1.rating })
+        case .name:
+            nfts.sort(by: { $0.name < $1.name })
+        }
+        
         viewController?.setup(nftList: nfts, countNft: countNFT, sumNft: sumNFTString)
         viewController?.showIsLoading(false)
     }
@@ -48,9 +62,9 @@ final class BasketPresenter {
             switch result {
             case .success(let basket):
                 self?.basket = basket
-            case .failure(let error):
-                break
-                // TODO: - 3/3 epic
+            case .failure(_):
+                self?.nftList = []
+                self?.viewController?.showErrorAlert(title: "Ошибка сети", completion: nil)
             }
         }
     }
@@ -71,15 +85,22 @@ final class BasketPresenter {
                 switch result {
                 case .success(let nft):
                     self?.nftList.append(nft)
-                case .failure(let error):
+                case .failure(_):
                     break
-                    // TODO: - 3/3 epic
                 }
             }
         }
         
         group.notify(queue: .main) { [weak self] in
-            self?.configViewController()
+            guard let self else { return }
+            
+            if nfts.count != self.nftList.count {
+                self.basket = nil
+                self.nftList = []
+                self.viewController?.showErrorAlert(title: "Ошибка сети", completion: nil)
+            }
+            
+            self.configViewController()
         }
     }
     
@@ -90,10 +111,14 @@ final class BasketPresenter {
             switch result {
             case .success(let basket):
                 self?.basket = basket
-            case .failure(let error):
-                break
-                // TODO: - 3/3 epic
+            case .failure(_):
+                self?.viewController?.showErrorAlert(title: "Ошибка сети", completion: nil)
             }
         }
+    }
+    
+    func updateSortType(_ type: BasketSortType) {
+        basketSortStorage.basketSortType = type
+        configViewController()
     }
 }

@@ -29,8 +29,9 @@ final class PaymentPresenter {
             case .success(let currencies):
                 self?.currencies = currencies
             case .failure(let error):
-                break
-                //TODO: 3/3 epic
+                self?.viewController?.showErrorAlert(title: "Ошибка загрузки данных", completion: { [weak self] in
+                    self?.viewController?.navigationController?.popViewController(animated: true)
+                })
             }
         }
     }
@@ -46,10 +47,10 @@ final class PaymentPresenter {
                 if order.success {
                     self?.viewController?.successPay()
                 } else {
-                    self?.viewController?.showErrorAlert()
+                    self?.viewController?.showFailurePayAlert()
                 }
             case .failure(_):
-                self?.viewController?.showErrorAlert()
+                self?.viewController?.showFailurePayAlert()
             }
         }
     }
