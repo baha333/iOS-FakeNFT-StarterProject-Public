@@ -73,7 +73,7 @@ final class PaymentViewController: UIViewController {
         self.currencies = currencies
     }
     
-    func showErrorAlert() {
+    func showFailurePayAlert() {
         let alert = UIAlertController(title: "Не удалось произвести оплату", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Отмена", style: .default))
         alert.addAction(UIAlertAction(title: "Повторить", style: .cancel, handler: { [weak self] _ in

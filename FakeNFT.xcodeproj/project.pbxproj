@@ -25,6 +25,9 @@
 		006275FE2C5D4814006046F9 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006275FD2C5D4814006046F9 /* PaymentService.swift */; };
 		006276002C5D48AE006046F9 /* PaymentRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006275FF2C5D48AE006046F9 /* PaymentRequests.swift */; };
 		006276022C5D4DE4006046F9 /* OrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006276012C5D4DE4006046F9 /* OrderResponse.swift */; };
+		006276042C5E107E006046F9 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006276032C5E107E006046F9 /* UIViewController+Extensions.swift */; };
+		006276062C5E161F006046F9 /* BasketSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006276052C5E161F006046F9 /* BasketSortType.swift */; };
+		006276082C5E1709006046F9 /* BasketSortStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006276072C5E1709006046F9 /* BasketSortStorage.swift */; };
 		0C79EE612A76DCD600EE90EA /* NftByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */; };
 		0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C79EE622A76DD1900EE90EA /* RequestConstants.swift */; };
 		0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C79EE652A76DDFF00EE90EA /* NftDetailViewController.swift */; };
@@ -101,6 +104,9 @@
 		006275FD2C5D4814006046F9 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		006275FF2C5D48AE006046F9 /* PaymentRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequests.swift; sourceTree = "<group>"; };
 		006276012C5D4DE4006046F9 /* OrderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderResponse.swift; sourceTree = "<group>"; };
+		006276032C5E107E006046F9 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		006276052C5E161F006046F9 /* BasketSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketSortType.swift; sourceTree = "<group>"; };
+		006276072C5E1709006046F9 /* BasketSortStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketSortStorage.swift; sourceTree = "<group>"; };
 		0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftByIdRequest.swift; sourceTree = "<group>"; };
 		0C79EE622A76DD1900EE90EA /* RequestConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConstants.swift; sourceTree = "<group>"; };
 		0C79EE652A76DDFF00EE90EA /* NftDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetailViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +193,8 @@
 			children = (
 				0038BE322C5B6A9B00A9327B /* NFTBasketModel.swift */,
 				0038BE3A2C5CBE0F00A9327B /* BasketModel.swift */,
+				006276052C5E161F006046F9 /* BasketSortType.swift */,
+				006276072C5E1709006046F9 /* BasketSortStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -414,6 +422,7 @@
 				3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */,
 				3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */,
 				0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */,
+				006276032C5E107E006046F9 /* UIViewController+Extensions.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -645,6 +654,7 @@
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
+				006276082C5E1709006046F9 /* BasketSortStorage.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				006275F62C5D19AA006046F9 /* PaymentViewController.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
@@ -672,6 +682,7 @@
 				0038BE462C5D163900A9327B /* CurrencyModel.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
+				006276042C5E107E006046F9 /* UIViewController+Extensions.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				006276022C5D4DE4006046F9 /* OrderResponse.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
@@ -685,6 +696,7 @@
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				0038BE3B2C5CBE0F00A9327B /* BasketModel.swift in Sources */,
 				0038BE442C5D0DEF00A9327B /* СurrencyViewCell.swift in Sources */,
+				006276062C5E161F006046F9 /* BasketSortType.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
 			);

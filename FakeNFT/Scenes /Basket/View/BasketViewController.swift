@@ -145,12 +145,32 @@ private extension BasketViewController {
     
     @objc
     func sortDidTap() {
+        let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        let priceSort = UIAlertAction(title: "По цене", style: .default, handler: { [weak self] _ in
+            self?.updateSortType(.price)
+        })
+        let ratingSort = UIAlertAction(title: "По рейтингу", style: .default, handler: { [weak self] _ in
+            self?.updateSortType(.rating)
+        })
+        let nameSort = UIAlertAction(title: "По названию", style: .default, handler: { [weak self] _ in
+            self?.updateSortType(.name)
+        })
+        let cancel = UIAlertAction(title: "Закрыть", style: .cancel)
+        alertController.addAction(priceSort)
+        alertController.addAction(ratingSort)
+        alertController.addAction(nameSort)
+        alertController.addAction(cancel)
         
+        present(alertController, animated: true)
     }
     
     @objc
     func payDidTap() {
         showPaymentViewController()
+    }
+    
+    func updateSortType(_ type: BasketSortType) {
+        presenter.updateSortType(type)
     }
     
     func showDeleteController(id: String) {
@@ -171,7 +191,6 @@ private extension BasketViewController {
         paymentViewController.modalPresentationStyle = .overCurrentContext
         paymentViewController.modalTransitionStyle = .crossDissolve
         paymentViewController.hidesBottomBarWhenPushed = true
-        
         paymentPresenter.viewController = paymentViewController
         navigationController?.pushViewController(paymentViewController, animated: true)
     }
