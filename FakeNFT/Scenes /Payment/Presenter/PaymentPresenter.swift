@@ -18,12 +18,12 @@ final class PaymentPresenter {
     }
     
     private func configViewController() {
-        ProgressHUD.dismiss()
+        viewController?.showIsLoading(false)
         viewController?.setup(currencies: currencies)
     }
     
     func getInfo() {
-        ProgressHUD.show()
+        viewController?.showIsLoading(true)
         paymentService.loadCurrencies { [weak self] result in
             switch result {
             case .success(let currencies):
@@ -36,10 +36,10 @@ final class PaymentPresenter {
     }
     
     func payWithCurrency(id: String) {
-        ProgressHUD.show()
+        viewController?.showIsLoading(true)
         paymentService.payWithCurrency(id: id) { [weak self] result in
             defer {
-                ProgressHUD.dismiss()
+                self?.viewController?.showIsLoading(false)
             }
             switch result {
             case .success(let order):

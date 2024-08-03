@@ -28,7 +28,7 @@ final class BasketPresenter {
             castResponseToModel(nft: $0)
         }
         viewController?.setup(nftList: nfts, countNft: countNFT, sumNft: sumNFTString)
-        ProgressHUD.dismiss()
+        viewController?.showIsLoading(false)
     }
     
     private func castResponseToModel(nft: BasketNFTModelResponse) -> NFTBasketModel? {
@@ -43,7 +43,7 @@ final class BasketPresenter {
     }
     
     func getInfo() {
-        ProgressHUD.show()
+        viewController?.showIsLoading(true)
         nftService.loadOrder { [weak self] result in
             switch result {
             case .success(let basket):
@@ -85,7 +85,7 @@ final class BasketPresenter {
     
     func removeNftBy(id: String) {
         let nfts = nftList.map({ $0.id }).filter { $0 != id }
-        ProgressHUD.show()
+        viewController?.showIsLoading(true)
         nftService.updateOrder(nfts: nfts) { [weak self] result in
             switch result {
             case .success(let basket):
