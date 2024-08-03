@@ -40,7 +40,25 @@ final class BasketViewController: UIViewController {
         return label
     }()
     
-    private var nftList: [NFTBasketModel] = []
+    private lazy var stubView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        let label = UILabel()
+        label.text = "Корзина пуста"
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        view.addSubview(label)
+        label.constraintCenters(to: view)
+        view.layer.zPosition = 2
+        view.isHidden = true
+        return view
+    }()
+    
+    private var nftList: [NFTBasketModel] = [] {
+        didSet {
+            stubView.isHidden = !nftList.isEmpty
+            navigationItem.rightBarButtonItem?.tintColor = nftList.isEmpty ? .white : .blackDay
+        }
+    }
     
     private let presenter: BasketPresenter
     
@@ -73,12 +91,14 @@ private extension BasketViewController {
         addSubviews()
         activateConstraints()
         setupNavBar()
+        addActions()
         presenter.getInfo()
     }
     
     func setupNavBar() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "sort"), style: .done, target: self, action: #selector(Self.sortDidTap))
         self.navigationItem.rightBarButtonItem?.tintColor = .blackDay
+        self.navigationItem.backButtonTitle = ""
     }
     
     func addSubviews() {
@@ -86,7 +106,8 @@ private extension BasketViewController {
         barBackgroundView,
         payButton,
         countLabel,
-        sumLabel
+        sumLabel,
+        stubView
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -115,11 +136,21 @@ private extension BasketViewController {
             sumLabel.topAnchor.constraint(greaterThanOrEqualTo: countLabel.bottomAnchor),
             sumLabel.trailingAnchor.constraint(lessThanOrEqualTo: payButton.leadingAnchor, constant: -24)
         ])
+        stubView.constraintEdges(to: view)
+    }
+    
+    func addActions() {
+        payButton.addTarget(self, action: #selector(Self.payDidTap), for: .touchUpInside)
     }
     
     @objc
     func sortDidTap() {
         
+    }
+    
+    @objc
+    func payDidTap() {
+        showPaymentViewController()
     }
     
     func showDeleteController(id: String) {
@@ -132,6 +163,17 @@ private extension BasketViewController {
             self?.presenter.removeNftBy(id: id)
         }
         present(deleteViewController, animated: true)
+    }
+    
+    func showPaymentViewController() {
+        let paymentPresenter = PaymentPresenter()
+        let paymentViewController = PaymentViewController(presenter: paymentPresenter)
+        paymentViewController.modalPresentationStyle = .overCurrentContext
+        paymentViewController.modalTransitionStyle = .crossDissolve
+        paymentViewController.hidesBottomBarWhenPushed = true
+        
+        paymentPresenter.viewController = paymentViewController
+        navigationController?.pushViewController(paymentViewController, animated: true)
     }
 }
 

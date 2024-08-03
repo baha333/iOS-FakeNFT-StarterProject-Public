@@ -28,6 +28,7 @@ final class TabBarController: UITabBarController {
         let basketController = BasketViewController(presenter: basketPresenter)
         basketPresenter.viewController = basketController
         let basketNavController = UINavigationController(rootViewController: basketController)
+        basketNavController.navigationBar.tintColor = .blackDay
         basketController.tabBarItem = basketTabBarItem
 
         viewControllers = [catalogController, basketNavController]
