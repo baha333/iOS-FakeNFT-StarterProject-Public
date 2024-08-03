@@ -25,7 +25,19 @@ final class MyNFTPresenter {
     }
     
     // MARK: - Public Methods
-
+    func tapLike(id: String) {
+        if likedNFT.contains(id) {
+            likedNFT.removeAll(where: {$0 == id})
+        } else {
+            likedNFT.append(id)
+        }
+        updateLikes()
+        view?.updateMyNFTs(nfts: nfts)
+    }
+    
+    func isLiked(id: String) -> Bool {
+        return likedNFT.contains(id)
+    }
     
     // MARK: - Private Methods
     private func fetchNFTs() {

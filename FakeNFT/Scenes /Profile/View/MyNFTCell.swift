@@ -1,10 +1,15 @@
 import UIKit
 import Kingfisher
 
+protocol MyNFTCellDelegate: AnyObject {
+    func didTapLikeButton(nftID: String)
+}
+
 final class MyNFTCell: UITableViewCell {
     
     // MARK: - Public Properties
     static let cellID = "MyNFTCell"
+    weak var delegate: MyNFTCellDelegate?
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -61,6 +66,7 @@ final class MyNFTCell: UITableViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.tintColor = UIColor(named: "ypWhite")
+        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
         return button
     }()
     
@@ -119,8 +125,12 @@ final class MyNFTCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    //MARK: - Action
-
+    //MARK: - Action
+    @objc func tapLikeButton() {
+        if let id = id {
+            delegate?.didTapLikeButton(nftID: id)
+        }
+    }
     
     // MARK: - Public Methods
     func changingNFT(nft: NFT) {
@@ -135,6 +145,11 @@ final class MyNFTCell: UITableViewCell {
         ratingImage.ratingVisualization(rating: nft.rating)
         ethLabel.text = String(format: "%.2f", nft.price) + " ETH"
         holderLabel.text = nft.author
+    }
+    
+    func setIsLiked(isLiked: Bool) {
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = isLiked ? UIColor(named: "ypRedUn"): UIColor(named: "ypWhite")
     }
     
     // MARK: - Private Methods

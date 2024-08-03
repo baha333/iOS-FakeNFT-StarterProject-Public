@@ -33,6 +33,15 @@ final class FavoritesNFTViewController: UIViewController {
         return collection
     }()
     
+    private lazy var  stubLabel: UILabel = {
+        let label = UILabel()
+        label.text = "У Вас еще нет избранных NFT"
+        label.font = UIFont.sfProBold17
+        label.textColor = UIColor(named: "ypBlack")
+        label.textAlignment = .center
+        return label
+    }()
+    
     // MARK: - Initializers
     init(nftID: [String], likedID: [String]) {
         self.nftID = nftID
@@ -54,6 +63,7 @@ final class FavoritesNFTViewController: UIViewController {
         super.viewDidLoad()
         
         customizingNavigation()
+        customizingStub()
         customizingScreenElements()
         customizingTheLayoutOfScreenElements()
         presenter = FavoritesNFTPresenter(nftID: self.nftID, likedNFT: self.likedNFT, editProfileService: editProfileService)
@@ -62,6 +72,18 @@ final class FavoritesNFTViewController: UIViewController {
     }
     
     //MARK: - Private Methods
+    private func customizingStub () {
+        view.addSubview(stubLabel)
+        
+        stubLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            stubLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stubLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            stubLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stubLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        ])
+    }
     
     private func customizingNavigation() {
         navigationController?.navigationBar.backgroundColor = UIColor(named: "ypWhite")
@@ -88,8 +110,10 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let presenter = presenter {
             if presenter.likes.isEmpty {
+                stubLabel.isHidden = false
                 favoritesNFTCollectionView.isHidden = true
             } else {
+                stubLabel.isHidden = true
                 favoritesNFTCollectionView.isHidden = false
             }
         } else {
@@ -106,6 +130,8 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.changingNFT(nft: likes)
+        cell.delegate = self
+        cell.setIsLikedNFT(likedNFT.contains(likes.id))
         cell.selectedBackgroundView = .none
         return cell
     }
@@ -153,5 +179,16 @@ extension FavoritesNFTViewController: FavoritesNFTViewControllerProtocol {
         DispatchQueue.main.async {
             self.favoritesNFTCollectionView.reloadData()
         }
+    }
+}
+
+// MARK: - FavoritesNFTViewControllerProtocol
+extension FavoritesNFTViewController: FavoritesNFTCellDelegate {
+    func didTapLikeButton(cell: FavoritesNFTCell) {
+        guard let indexPath = favoritesNFTCollectionView.indexPath(for: cell) else { return }
+        
+        guard let like = presenter?.likes[indexPath.row] else { return }
+        presenter?.tapLikeNFT(for: like)
+        
     }
 }

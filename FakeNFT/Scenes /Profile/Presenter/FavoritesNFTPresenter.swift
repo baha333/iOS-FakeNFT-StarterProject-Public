@@ -24,7 +24,21 @@ final class FavoritesNFTPresenter {
     }
     
     // MARK: - Public Methods
-
+    func tapLikeNFT(for nft: NFT) {
+        if let index = likedNFT.firstIndex(of: nft.id) {
+            likedNFT.remove(at: index)
+            likes.removeAll { $0.id == nft.id }
+        } else {
+            likedNFT.append(nft.id)
+            likes.append(nft)
+        }
+        updateLikes()
+        view?.updateFavoriteNFTs(likes)
+    }
+    
+    func isLiked(id: String) -> Bool {
+        return likedNFT.contains(id)
+    }
     
     // MARK: - Private Methods
     private func fetchFavoriteNFTs() {
