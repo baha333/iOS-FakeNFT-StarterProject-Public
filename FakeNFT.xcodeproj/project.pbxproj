@@ -323,7 +323,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
-				747BB2B52C5294C600ED4205 /* Profile */,
+				747BB2B52C5294C600ED4205 /* ProfileScene */,
 				E1A1B9D82AA01C9700C3AFBC /* TabBarController */,
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
@@ -418,16 +418,18 @@
 			path = Colors;
 			sourceTree = "<group>";
 		};
-		747BB2B52C5294C600ED4205 /* Profile */ = {
+		747BB2B52C5294C600ED4205 /* ProfileScene */ = {
 			isa = PBXGroup;
 			children = (
-				747BB2E32C5B9BED00ED4205 /* Services */,
 				747BB2B62C5294E300ED4205 /* Model */,
-				747BB2B72C5294EE00ED4205 /* View */,
-				747BB2B82C5294F600ED4205 /* Presenter */,
+				7486C5812C5EAD5A00A2E7A4 /* ProfilePage */,
+				7486C5822C5EAD7F00A2E7A4 /* EditProfilePage */,
+				7486C5832C5EAD9100A2E7A4 /* MyNFTPage */,
+				7486C5842C5EAD9D00A2E7A4 /* FavoritesNFTPage */,
+				747BB2E32C5B9BED00ED4205 /* Services */,
 				747BB2EE2C5B9E8900ED4205 /* NetworkConstants.swift */,
 			);
-			path = Profile;
+			path = ProfileScene;
 			sourceTree = "<group>";
 		};
 		747BB2B62C5294E300ED4205 /* Model */ = {
@@ -442,42 +444,56 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		747BB2B72C5294EE00ED4205 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				747BB2BD2C52953C00ED4205 /* ProfileViewController.swift */,
-				747BB2BF2C52954A00ED4205 /* ProfileCell.swift */,
-				747BB2C12C52956500ED4205 /* EditProfileViewController.swift */,
-				747BB2C72C5295A100ED4205 /* MyNFTViewController.swift */,
-				747BB2C92C5295AF00ED4205 /* MyNFTCell.swift */,
-				747BB2CB2C52960D00ED4205 /* FavoritesNFTViewController.swift */,
-				747BB2CD2C52963300ED4205 /* FavoritesNFTCell.swift */,
-				747BB2CF2C52964600ED4205 /* SpecialRatingView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		747BB2B82C5294F600ED4205 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				747BB2DB2C5B9B0B00ED4205 /* ProfilePresenter.swift */,
-				747BB2DD2C5B9B3200ED4205 /* EditProfilePresenter.swift */,
-				747BB2DF2C5B9B4400ED4205 /* MyNFTPresenter.swift */,
-				747BB2E12C5B9BB900ED4205 /* FavoritesNFTPresenter.swift */,
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
 		747BB2E32C5B9BED00ED4205 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				747BB2E42C5B9C0900ED4205 /* ProfileService.swift */,
-				747BB2E62C5B9C1C00ED4205 /* EditProfileService.swift */,
-				747BB2E82C5B9C2D00ED4205 /* MyNFTService.swift */,
-				747BB2EA2C5B9C4600ED4205 /* FavoritesNFTService.swift */,
 				747BB2EC2C5B9C5C00ED4205 /* URLSession.swift */,
+				747BB2CF2C52964600ED4205 /* SpecialRatingView.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		7486C5812C5EAD5A00A2E7A4 /* ProfilePage */ = {
+			isa = PBXGroup;
+			children = (
+				747BB2E42C5B9C0900ED4205 /* ProfileService.swift */,
+				747BB2BD2C52953C00ED4205 /* ProfileViewController.swift */,
+				747BB2BF2C52954A00ED4205 /* ProfileCell.swift */,
+				747BB2DB2C5B9B0B00ED4205 /* ProfilePresenter.swift */,
+			);
+			path = ProfilePage;
+			sourceTree = "<group>";
+		};
+		7486C5822C5EAD7F00A2E7A4 /* EditProfilePage */ = {
+			isa = PBXGroup;
+			children = (
+				747BB2E62C5B9C1C00ED4205 /* EditProfileService.swift */,
+				747BB2C12C52956500ED4205 /* EditProfileViewController.swift */,
+				747BB2DD2C5B9B3200ED4205 /* EditProfilePresenter.swift */,
+			);
+			path = EditProfilePage;
+			sourceTree = "<group>";
+		};
+		7486C5832C5EAD9100A2E7A4 /* MyNFTPage */ = {
+			isa = PBXGroup;
+			children = (
+				747BB2E82C5B9C2D00ED4205 /* MyNFTService.swift */,
+				747BB2C72C5295A100ED4205 /* MyNFTViewController.swift */,
+				747BB2DF2C5B9B4400ED4205 /* MyNFTPresenter.swift */,
+				747BB2C92C5295AF00ED4205 /* MyNFTCell.swift */,
+			);
+			path = MyNFTPage;
+			sourceTree = "<group>";
+		};
+		7486C5842C5EAD9D00A2E7A4 /* FavoritesNFTPage */ = {
+			isa = PBXGroup;
+			children = (
+				747BB2EA2C5B9C4600ED4205 /* FavoritesNFTService.swift */,
+				747BB2CB2C52960D00ED4205 /* FavoritesNFTViewController.swift */,
+				747BB2CD2C52963300ED4205 /* FavoritesNFTCell.swift */,
+				747BB2E12C5B9BB900ED4205 /* FavoritesNFTPresenter.swift */,
+			);
+			path = FavoritesNFTPage;
 			sourceTree = "<group>";
 		};
 		E19CD5A92A98B55900CA39A5 /* Cell */ = {
