@@ -13,6 +13,14 @@ final class UserCardTableViewCell: UITableViewCell {
         self.backgroundColor = UIColor(named: "YPWhite")
         self.accessoryType = .disclosureIndicator
         self.selectionStyle = .none
+        self.tintColor = .black
+        let image = UIImage(named: "ListItem")?.withRenderingMode(.alwaysTemplate)
+        if let width = image?.size.width,
+           let height = image?.size.height {
+            let disclosureImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+            disclosureImageView.image = image
+            self.accessoryView = disclosureImageView
+        }
         setupTitleLabel()
         setupNumberNftLabel()
         setupConstraint()
