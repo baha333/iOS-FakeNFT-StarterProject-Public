@@ -8,3 +8,6 @@
 "Statistic.sortAlert.name" = "По имени";
 "Statistic.sortAlert.rating" = "По рейтингу";
 "Statistic.sortAlert.close" = "Закрыть";
+"Statistic.userCard.website" = "Перейти на сайт пользователя";
+"Statistic.userCard.nft" = "Коллекция NFT";
+"Statistic.userCard.error" = "Не удалось открыть сайт";
