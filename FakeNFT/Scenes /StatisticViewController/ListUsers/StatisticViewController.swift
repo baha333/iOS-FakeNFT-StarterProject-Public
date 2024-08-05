@@ -1,8 +1,7 @@
 import UIKit
 import ProgressHUD
 
-
-class StatisticViewController: UIViewController {
+final class StatisticViewController: UIViewController {
     
     // MARK: - Public Properties
     let servicesAssembly: ServicesAssembly
