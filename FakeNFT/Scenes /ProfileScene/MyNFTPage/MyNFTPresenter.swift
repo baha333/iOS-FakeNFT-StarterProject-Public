@@ -55,13 +55,12 @@ final class MyNFTPresenter {
                 switch result {
                 case .success(let nfts):
                     allNFTs.append(nfts)
-                    UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     print("Failed to fetch NFTs: \(error)")
-                    UIBlockingProgressHUD.dismiss()
                 }
             }
             group.notify(queue: .main) { [weak self] in
+                UIBlockingProgressHUD.dismiss()
                 allNFTs.sort(by: { $0.rating > $1.rating })
                 self?.view?.updateMyNFTs(nfts: allNFTs)
                 
