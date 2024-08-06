@@ -41,6 +41,7 @@ final class MyNFTPresenter {
     
     // MARK: - Private Methods
     private func fetchNFTs() {
+        UIBlockingProgressHUD.show()
         var allNFTs: [NFT] = []
         let group = DispatchGroup()
         
@@ -54,8 +55,10 @@ final class MyNFTPresenter {
                 switch result {
                 case .success(let nfts):
                     allNFTs.append(nfts)
+                    UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     print("Failed to fetch NFTs: \(error)")
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
             group.notify(queue: .main) { [weak self] in
