@@ -147,14 +147,17 @@ final class MyNFTCell: UITableViewCell {
     
     //MARK: - Action
     @objc func tapLikeButton() {
+        print("Like button tapped")
         if let id = id {
             delegate?.didTapLikeButton(nftID: id)
+        } else {
+            print("ID is nil")
         }
     }
     
     // MARK: - Public Methods
     func changingNFT(nft: NFT) {
-        
+        self.id = nft.id
         if let nftImageURLString = nft.images.first,
            let nftImageURL = URL(string: nftImageURLString) {
             nftImage.kf.setImage(with: nftImageURL)

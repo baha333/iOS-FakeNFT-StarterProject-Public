@@ -22,6 +22,7 @@ final class MyNFTPresenter {
         self.nftID = nftID
         self.likedNFT = likedNFT
         self.editProfileService = editProfileService
+        fetchNFTs()
     }
     
     // MARK: - Public Methods
@@ -41,7 +42,6 @@ final class MyNFTPresenter {
     
     // MARK: - Private Methods
     private func fetchNFTs() {
-        UIBlockingProgressHUD.show()
         var allNFTs: [NFT] = []
         let group = DispatchGroup()
         
@@ -60,8 +60,8 @@ final class MyNFTPresenter {
                 }
             }
             group.notify(queue: .main) { [weak self] in
-                UIBlockingProgressHUD.dismiss()
                 allNFTs.sort(by: { $0.rating > $1.rating })
+                self?.nfts = allNFTs
                 self?.view?.updateMyNFTs(nfts: allNFTs)
                 
             }
@@ -90,7 +90,7 @@ final class MyNFTPresenter {
 // MARK: - MyNFTPresenterProtocol
 extension MyNFTPresenter: MyNFTPresenterProtocol {
     func viewDidLoad() {
-        fetchNFTs()
+
     }
 }
 

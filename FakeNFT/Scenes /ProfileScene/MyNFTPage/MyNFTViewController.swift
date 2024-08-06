@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 protocol MyNFTLikesDelegate: AnyObject {
     func didUpdateLikedNFTCount(count: Int)
@@ -108,14 +109,14 @@ final class MyNFTViewController: UIViewController {
         customizingScreenElements()
         customizingTheLayoutOfScreenElements()
         
+        stubLabel.isHidden = true
+        myNFTTableView.isHidden = true
+        sortingButton.image = nil
+        
+        UIBlockingProgressHUD.show()
+        
         presenter = MyNFTPresenter(nftID: self.nftID, likedNFT: self.likedNFT, editProfileService: editProfileService)
         presenter?.view = self
-        presenter?.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateUI()
     }
     
     //MARK: - Private Methods
@@ -220,49 +221,25 @@ extension MyNFTViewController: UITableViewDelegate {
 extension MyNFTViewController: MyNFTViewControllerProtocol {
     
     func updateMyNFTs(nfts: [NFT]?) {
-        guard let presenter = presenter else {
-            print("Presenter is nil")
-            return
-        }
-        
         guard let nfts = nfts else {
             print("Received nil NFTs")
             return
         }
         
-        presenter.nfts = nfts
-        if let sortType = UserDefaults.standard.data(forKey: "sortType") {
-            let type = try? PropertyListDecoder().decode(Filter.self, from: sortType)
-            print ("МОИ НФТ = \(presenter.nfts)")
-            presenter.nfts = applySortType(by: type ?? .rating)
-        }
-        DispatchQueue.main.async {
-            self.updateUI()
-            self.myNFTTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            UIBlockingProgressHUD.dismiss()
+            
+            if let sortType = UserDefaults.standard.data(forKey: "sortType"),
+               let type = try? PropertyListDecoder().decode(Filter.self, from: sortType) {
+                self?.presenter?.nfts = self?.applySortType(by: type) ?? nfts
+            } else {
+                self?.presenter?.nfts = nfts
+            }
+            
+            self?.updateUI()
+            self?.myNFTTableView.reloadData()
         }
     }
-    
-//    func updateMyNFTs(nfts: [NFT]?) {
-//        guard let presenter = presenter else {
-//            print("Presenter is nil")
-//            return
-//        }
-//
-//        guard let nfts = nfts else {
-//            print("Received nil NFTs")
-//            return
-//        }
-//
-//        presenter.nfts = nfts
-//        if let sortType = UserDefaults.standard.data(forKey: "sortType") {
-//            let type = try? PropertyListDecoder().decode(Filter.self, from: sortType)
-//            print ("МОИ НФТ = \(presenter.nfts)")
-//            presenter.nfts = applySortType(by: type ?? .rating)
-//        }
-//        DispatchQueue.main.async {
-//            self.myNFTTableView.reloadData()
-//        }
-//    }
 }
 
 // MARK: - MyNFTCellDelegate
