@@ -15,6 +15,8 @@ final class MyNFTCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor(named: "ypBlack")
         label.font = UIFont.sfProBold17
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
@@ -30,6 +32,8 @@ final class MyNFTCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor(named: "ypBlack")
         label.font = UIFont.sfProRegular13
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
@@ -76,7 +80,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 35
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fill
         stackView.alignment = .leading
         return stackView
     }()
@@ -84,7 +88,9 @@ final class MyNFTCell: UITableViewCell {
     private lazy var fromStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 4
-        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .center
         return stackView
     }()
     
@@ -125,6 +131,20 @@ final class MyNFTCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+            // Настройка fromLabel
+            fromLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            fromLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            
+            // Настройка holderLabel
+            holderLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            holderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            holderLabel.lineBreakMode = .byTruncatingTail
+        }
+    
     //MARK: - Action
     @objc func tapLikeButton() {
         if let id = id {
@@ -144,7 +164,22 @@ final class MyNFTCell: UITableViewCell {
         nameLabel.text = nft.name
         ratingImage.ratingVisualization(rating: nft.rating)
         ethLabel.text = String(format: "%.2f", nft.price) + " ETH"
-        holderLabel.text = nft.author
+        let authorName = extractAuthorName(from: nft.author)
+        holderLabel.text = authorName
+    }
+    
+    func extractAuthorName(from urlString: String) -> String {
+        let pattern = "https?://([^.]+)"
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []),
+              let match = regex.firstMatch(in: urlString, options: [], range: NSRange(urlString.startIndex..., in: urlString)) else {
+            return urlString
+        }
+        
+        if let range = Range(match.range(at: 1), in: urlString) {
+            return String(urlString[range])
+        }
+        
+        return urlString
     }
     
     func setIsLiked(isLiked: Bool) {
@@ -161,32 +196,40 @@ final class MyNFTCell: UITableViewCell {
         [fromLabel, holderLabel].forEach {fromStackView.addArrangedSubview($0)}
     }
     
+    
+    
     private func customizingTheLayoutOfScreenElements() {
         [nftImage, infoStackView, likeButton, priceStackView, fromStackView, nameLabel].forEach {$0.translatesAutoresizingMaskIntoConstraints = false}
-        
+
         NSLayoutConstraint.activate([
+
             nftImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nftImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nftImage.heightAnchor.constraint(equalToConstant: 108),
             nftImage.widthAnchor.constraint(equalToConstant: 108),
-            
+
             infoStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             infoStackView.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 20),
-            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -23),
+            infoStackView.trailingAnchor.constraint(equalTo: priceStackView.leadingAnchor, constant: -20),
             infoStackView.heightAnchor.constraint(equalToConstant: 62),
-            
+
             likeButton.topAnchor.constraint(equalTo: nftImage.topAnchor),
             likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor),
             likeButton.heightAnchor.constraint(equalToConstant: 40),
             likeButton.widthAnchor.constraint(equalToConstant: 40),
-            
+
             priceStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            priceStackView.trailingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
+//            priceStackView.leadingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
+            priceStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
+            priceStackView.widthAnchor.constraint(equalToConstant: 100),
             priceStackView.topAnchor.constraint(equalTo: infoStackView.topAnchor, constant: 10),
-            
-            fromStackView.widthAnchor.constraint(equalToConstant: 58),
-            nameLabel.widthAnchor.constraint(equalToConstant: 78)
+
+            nameLabel.widthAnchor.constraint(equalToConstant: 78),
+            holderLabel.trailingAnchor.constraint(equalTo: priceStackView.leadingAnchor, constant: -8)
         ])
     }
 }
+
+
+
 
