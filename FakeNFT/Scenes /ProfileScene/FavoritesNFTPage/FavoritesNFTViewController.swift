@@ -111,7 +111,6 @@ final class FavoritesNFTViewController: UIViewController {
     }
     
     private func updateUI() {
-        // Изменение: упрощена логика проверки на пустой массив
         if presenter?.likes.isEmpty == true {
             stubLabel.isHidden = false
             favoritesNFTCollectionView.isHidden = true
@@ -149,7 +148,6 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
             fatalError("Failed to cast UICollectionViewCell to FavoritesNFTCell")
         }
         
-        // Изменение: добавлена проверка на существование элемента в массиве
         if let likes = presenter?.likes, indexPath.row < likes.count {
             let like = likes[indexPath.row]
             cell.changingNFT(nft: like)
@@ -198,8 +196,6 @@ extension FavoritesNFTViewController: FavoritesNFTViewControllerProtocol {
         }
         DispatchQueue.main.async { [weak self] in
             UIBlockingProgressHUD.dismiss()
-            // Изменение: обновление likes в presenter перенесено сюда
-            // для обеспечения потокобезопасности
             self?.presenter?.likes = likes
             self?.updateUI()
         }

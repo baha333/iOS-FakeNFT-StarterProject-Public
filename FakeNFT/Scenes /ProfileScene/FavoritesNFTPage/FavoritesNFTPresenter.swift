@@ -92,8 +92,6 @@ final class FavoritesNFTPresenter {
             switch result {
             case .success:
                 print("Успешно обновлено")
-                // Изменение: обновление UI перенесено сюда для гарантии,
-                // что оно происходит после успешного обновления на сервере
                 DispatchQueue.main.async {
                     self?.view?.updateFavoriteNFTs(self?.likes)
                 }
