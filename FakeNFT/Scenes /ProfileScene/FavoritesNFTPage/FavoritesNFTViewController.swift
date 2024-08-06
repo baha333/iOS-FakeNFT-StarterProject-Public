@@ -66,6 +66,12 @@ final class FavoritesNFTViewController: UIViewController {
         customizingStub()
         customizingScreenElements()
         customizingTheLayoutOfScreenElements()
+        
+        stubLabel.isHidden = true
+        favoritesNFTCollectionView.isHidden = true
+        
+        UIBlockingProgressHUD.show()
+        
         presenter = FavoritesNFTPresenter(nftID: self.nftID, likedNFT: self.likedNFT, editProfileService: editProfileService)
         presenter?.view = self
         presenter?.viewDidLoad()
@@ -103,35 +109,54 @@ final class FavoritesNFTViewController: UIViewController {
             favoritesNFTCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
+    
+    private func updateUI() {
+        // Изменение: упрощена логика проверки на пустой массив
+        if presenter?.likes.isEmpty == true {
+            stubLabel.isHidden = false
+            favoritesNFTCollectionView.isHidden = true
+        } else {
+            stubLabel.isHidden = true
+            favoritesNFTCollectionView.isHidden = false
+        }
+        favoritesNFTCollectionView.reloadData()
+    }
+    
+//    private func updateUI() {
+//        if let presenter = presenter {
+//            if presenter.likes.isEmpty {
+//                stubLabel.isHidden = false
+//                favoritesNFTCollectionView.isHidden = true
+//            } else {
+//                stubLabel.isHidden = true
+//                favoritesNFTCollectionView.isHidden = false
+//            }
+//        } else {
+//            print("presenter is nil")
+//        }
+//        favoritesNFTCollectionView.reloadData()
+//    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension FavoritesNFTViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let presenter = presenter {
-            if presenter.likes.isEmpty {
-                stubLabel.isHidden = false
-                favoritesNFTCollectionView.isHidden = true
-            } else {
-                stubLabel.isHidden = true
-                favoritesNFTCollectionView.isHidden = false
-            }
-        } else {
-            print("presenter is nil")
-        }
         return presenter?.likes.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNFTCell.cellID, for: indexPath) as? FavoritesNFTCell else { fatalError("Failed to cast UICollectionViewCell to FavoritesNFTCell")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNFTCell.cellID, for: indexPath) as? FavoritesNFTCell else {
+            fatalError("Failed to cast UICollectionViewCell to FavoritesNFTCell")
         }
         
-        guard let likes = presenter?.likes[indexPath.row] else {
-            return UICollectionViewCell()
+        // Изменение: добавлена проверка на существование элемента в массиве
+        if let likes = presenter?.likes, indexPath.row < likes.count {
+            let like = likes[indexPath.row]
+            cell.changingNFT(nft: like)
+            cell.delegate = self
+            cell.setIsLikedNFT(likedNFT.contains(like.id))
         }
-        cell.changingNFT(nft: likes)
-        cell.delegate = self
-        cell.setIsLikedNFT(likedNFT.contains(likes.id))
+        
         cell.selectedBackgroundView = .none
         return cell
     }
@@ -165,21 +190,38 @@ extension FavoritesNFTViewController: UICollectionViewDelegateFlowLayout {
 }
 // MARK: - FavoritesNFTViewControllerProtocol
 extension FavoritesNFTViewController: FavoritesNFTViewControllerProtocol {
+    
     func updateFavoriteNFTs(_ likes: [NFT]?) {
-        guard let presenter = presenter else {
-            print("Presenter is nil")
-            return
-        }
-        
         guard let likes = likes else {
             print("Received nil Likes")
             return
         }
-        presenter.likes = likes
-        DispatchQueue.main.async {
-            self.favoritesNFTCollectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            UIBlockingProgressHUD.dismiss()
+            // Изменение: обновление likes в presenter перенесено сюда
+            // для обеспечения потокобезопасности
+            self?.presenter?.likes = likes
+            self?.updateUI()
         }
     }
+//    func updateFavoriteNFTs(_ likes: [NFT]?) {
+//        guard let presenter = presenter else {
+//            print("Presenter is nil")
+//            return
+//        }
+//
+//        guard let likes = likes else {
+//            print("Received nil Likes")
+//            return
+//        }
+//        presenter.likes = likes
+//        DispatchQueue.main.async {
+//            UIBlockingProgressHUD.dismiss()
+//            self.updateUI()
+//            self.favoritesNFTCollectionView.reloadData()
+//
+//        }
+//    }
 }
 
 // MARK: - FavoritesNFTViewControllerProtocol

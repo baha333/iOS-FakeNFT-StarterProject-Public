@@ -21,9 +21,11 @@ final class FavoritesNFTPresenter {
         self.nftID = nftID
         self.likedNFT = likedNFT
         self.editProfileService = editProfileService
+        fetchFavoriteNFTs()
     }
     
     // MARK: - Public Methods
+    
     func tapLikeNFT(for nft: NFT) {
         if let index = likedNFT.firstIndex(of: nft.id) {
             likedNFT.remove(at: index)
@@ -33,14 +35,26 @@ final class FavoritesNFTPresenter {
             likes.append(nft)
         }
         updateLikes()
-        view?.updateFavoriteNFTs(likes)
     }
     
+    //    func tapLikeNFT(for nft: NFT) {
+    //        if let index = likedNFT.firstIndex(of: nft.id) {
+    //            likedNFT.remove(at: index)
+    //            likes.removeAll { $0.id == nft.id }
+    //        } else {
+    //            likedNFT.append(nft.id)
+    //            likes.append(nft)
+    //        }
+    //        updateLikes()
+    //        view?.updateFavoriteNFTs(likes)
+    //    }
+    //
     func isLiked(id: String) -> Bool {
         return likedNFT.contains(id)
     }
     
     // MARK: - Private Methods
+    
     private func fetchFavoriteNFTs() {
         var allNFTs: [NFT] = []
         let group = DispatchGroup()
@@ -58,9 +72,11 @@ final class FavoritesNFTPresenter {
                     print("Failed to fetch NFTs: \(error)")
                 }
             }
-            group.notify(queue: .main) { [weak self] in
-                self?.view?.updateFavoriteNFTs(allNFTs)
-            }
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            self?.likes = allNFTs
+            self?.view?.updateFavoriteNFTs(allNFTs)
         }
     }
     
@@ -72,20 +88,43 @@ final class FavoritesNFTPresenter {
             website: nil,
             likes: likedNFT
         )
-        editProfileService.updateProfile(with: model) { result in
+        editProfileService.updateProfile(with: model) { [weak self] result in
             switch result {
             case .success:
-                print("Успешно")
+                print("Успешно обновлено")
+                // Изменение: обновление UI перенесено сюда для гарантии,
+                // что оно происходит после успешного обновления на сервере
+                DispatchQueue.main.async {
+                    self?.view?.updateFavoriteNFTs(self?.likes)
+                }
             case .failure(let error):
-                print("\(error.localizedDescription)")
+                print("Ошибка при обновлении: \(error.localizedDescription)")
             }
         }
     }
+    
+//    private func updateLikes() {
+//        let model = EditProfile(
+//            name: nil,
+//            avatar: nil,
+//            description: nil,
+//            website: nil,
+//            likes: likedNFT
+//        )
+//        editProfileService.updateProfile(with: model) { result in
+//            switch result {
+//            case .success:
+//                print("Успешно")
+//            case .failure(let error):
+//                print("\(error.localizedDescription)")
+//            }
+//        }
+//    }
 }
 
 // MARK: - FavoritesNFTPresenterProtocol
 extension FavoritesNFTPresenter: FavoritesNFTPresenterProtocol {
     func viewDidLoad() {
-        fetchFavoriteNFTs()
+        
     }
 }
