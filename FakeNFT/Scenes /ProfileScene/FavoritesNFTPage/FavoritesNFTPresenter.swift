@@ -37,18 +37,6 @@ final class FavoritesNFTPresenter {
         updateLikes()
     }
     
-    //    func tapLikeNFT(for nft: NFT) {
-    //        if let index = likedNFT.firstIndex(of: nft.id) {
-    //            likedNFT.remove(at: index)
-    //            likes.removeAll { $0.id == nft.id }
-    //        } else {
-    //            likedNFT.append(nft.id)
-    //            likes.append(nft)
-    //        }
-    //        updateLikes()
-    //        view?.updateFavoriteNFTs(likes)
-    //    }
-    //
     func isLiked(id: String) -> Bool {
         return likedNFT.contains(id)
     }
@@ -100,24 +88,6 @@ final class FavoritesNFTPresenter {
             }
         }
     }
-    
-//    private func updateLikes() {
-//        let model = EditProfile(
-//            name: nil,
-//            avatar: nil,
-//            description: nil,
-//            website: nil,
-//            likes: likedNFT
-//        )
-//        editProfileService.updateProfile(with: model) { result in
-//            switch result {
-//            case .success:
-//                print("Успешно")
-//            case .failure(let error):
-//                print("\(error.localizedDescription)")
-//            }
-//        }
-//    }
 }
 
 // MARK: - FavoritesNFTPresenterProtocol

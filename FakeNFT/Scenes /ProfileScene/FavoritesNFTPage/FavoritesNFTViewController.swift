@@ -120,21 +120,6 @@ final class FavoritesNFTViewController: UIViewController {
         }
         favoritesNFTCollectionView.reloadData()
     }
-    
-//    private func updateUI() {
-//        if let presenter = presenter {
-//            if presenter.likes.isEmpty {
-//                stubLabel.isHidden = false
-//                favoritesNFTCollectionView.isHidden = true
-//            } else {
-//                stubLabel.isHidden = true
-//                favoritesNFTCollectionView.isHidden = false
-//            }
-//        } else {
-//            print("presenter is nil")
-//        }
-//        favoritesNFTCollectionView.reloadData()
-//    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -200,24 +185,6 @@ extension FavoritesNFTViewController: FavoritesNFTViewControllerProtocol {
             self?.updateUI()
         }
     }
-//    func updateFavoriteNFTs(_ likes: [NFT]?) {
-//        guard let presenter = presenter else {
-//            print("Presenter is nil")
-//            return
-//        }
-//
-//        guard let likes = likes else {
-//            print("Received nil Likes")
-//            return
-//        }
-//        presenter.likes = likes
-//        DispatchQueue.main.async {
-//            UIBlockingProgressHUD.dismiss()
-//            self.updateUI()
-//            self.favoritesNFTCollectionView.reloadData()
-//
-//        }
-//    }
 }
 
 // MARK: - FavoritesNFTViewControllerProtocol

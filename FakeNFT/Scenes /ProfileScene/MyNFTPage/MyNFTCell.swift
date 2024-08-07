@@ -222,7 +222,6 @@ final class MyNFTCell: UITableViewCell {
             likeButton.widthAnchor.constraint(equalToConstant: 40),
 
             priceStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            priceStackView.leadingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
             priceStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
             priceStackView.widthAnchor.constraint(equalToConstant: 100),
             priceStackView.topAnchor.constraint(equalTo: infoStackView.topAnchor, constant: 10),
