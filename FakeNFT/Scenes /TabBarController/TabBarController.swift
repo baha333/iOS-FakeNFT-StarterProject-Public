@@ -1,12 +1,12 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    
     var servicesAssembly: ServicesAssembly!
-
-    private let catalogTabBarItem = UITabBarItem(
-        title: NSLocalizedString("Tab.catalog", comment: ""),
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+    
+    private let profileTabBarItem = UITabBarItem(
+        title: "Профиль",
+        image: UIImage(named: "profileBar"),
         tag: 0
     )
     
@@ -19,6 +19,7 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+<<<<<<< .merge_file_LpskS6
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
@@ -32,6 +33,17 @@ final class TabBarController: UITabBarController {
         basketController.tabBarItem = basketTabBarItem
 
         viewControllers = [catalogController, basketNavController]
+=======
+        let profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        profileViewController.tabBarItem = profileTabBarItem
+
+        let profilePresenter = ProfilePresenter()
+        profileViewController.presenter = profilePresenter
+        profilePresenter.view = profileViewController
+        
+        viewControllers = [profileNavigationController]
+>>>>>>> .merge_file_THM34o
 
         view.backgroundColor = .systemBackground
     }
