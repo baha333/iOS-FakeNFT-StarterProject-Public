@@ -66,13 +66,16 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func viewWillAppear() {
+        UIBlockingProgressHUD.show()
         profileService.fetchProfile { [weak self] result in
             switch result {
             case .success(let profile):
                 self?.profile = profile
                 self?.view?.updateProfile(profile: profile)
+                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 print("Failed to fetch profile: \(error)")
+                UIBlockingProgressHUD.dismiss()
             }
         }
         return

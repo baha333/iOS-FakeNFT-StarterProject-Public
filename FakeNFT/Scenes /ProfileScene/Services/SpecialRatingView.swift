@@ -3,10 +3,7 @@ import UIKit
 
 final class SpecialRatingView: UIViewController {
     //MARK: - Public Properties
-    let noActiveStarImage = UIImage(named: "noActiveStar")
-    lazy var imageViewArray: [UIImageView] = {
-        return [UIImageView](repeating: UIImageView(image: self.noActiveStarImage), count: 5)
-    }()
+    var imageViewArray: [UIImageView] = [UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar")), UIImageView(image: UIImage(named: "noActiveStar"))]
     
     // MARK: - Private Properties
     private lazy var stackView: UIStackView = {

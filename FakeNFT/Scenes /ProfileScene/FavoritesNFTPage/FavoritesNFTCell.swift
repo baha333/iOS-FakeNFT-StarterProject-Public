@@ -1,9 +1,14 @@
 import UIKit
 import Kingfisher
 
+protocol FavoritesNFTCellDelegate: AnyObject {
+    func didTapLikeButton(cell: FavoritesNFTCell)
+}
+
 final class FavoritesNFTCell: UICollectionViewCell {
     // MARK: - Public Properties
     static let cellID = "FavoritesNFTCell"
+    weak var delegate: FavoritesNFTCellDelegate?
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -37,6 +42,7 @@ final class FavoritesNFTCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.tintColor = UIColor(named: "ypRedUn")
+        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
         return button
     }()
     
@@ -75,7 +81,9 @@ final class FavoritesNFTCell: UICollectionViewCell {
     }
     
     //MARK: - Action
-
+    @objc func tapLikeButton() {
+        delegate?.didTapLikeButton(cell: self)
+    }
     
     // MARK: - Public Methods
     func changingNFT(nft: NFT) {
@@ -92,6 +100,10 @@ final class FavoritesNFTCell: UICollectionViewCell {
         id = nft.id
     }
     
+    func setIsLikedNFT(_ isLiked: Bool) {
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = isLiked ? UIColor(named: "ypRedUn"): UIColor(named: "ypWhite")
+    }
     
     // MARK: - Private Methods
     private func customizingScreenElements() {

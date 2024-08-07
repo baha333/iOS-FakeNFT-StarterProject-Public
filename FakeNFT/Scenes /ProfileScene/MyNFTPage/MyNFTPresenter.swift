@@ -22,10 +22,23 @@ final class MyNFTPresenter {
         self.nftID = nftID
         self.likedNFT = likedNFT
         self.editProfileService = editProfileService
+        fetchNFTs()
     }
     
     // MARK: - Public Methods
-
+    func tapLike(id: String) {
+        if likedNFT.contains(id) {
+            likedNFT.removeAll(where: {$0 == id})
+        } else {
+            likedNFT.append(id)
+        }
+        updateLikes()
+        view?.updateMyNFTs(nfts: nfts)
+    }
+    
+    func isLiked(id: String) -> Bool {
+        return likedNFT.contains(id)
+    }
     
     // MARK: - Private Methods
     private func fetchNFTs() {
@@ -48,6 +61,7 @@ final class MyNFTPresenter {
             }
             group.notify(queue: .main) { [weak self] in
                 allNFTs.sort(by: { $0.rating > $1.rating })
+                self?.nfts = allNFTs
                 self?.view?.updateMyNFTs(nfts: allNFTs)
                 
             }
@@ -76,7 +90,7 @@ final class MyNFTPresenter {
 // MARK: - MyNFTPresenterProtocol
 extension MyNFTPresenter: MyNFTPresenterProtocol {
     func viewDidLoad() {
-        fetchNFTs()
+
     }
 }
 

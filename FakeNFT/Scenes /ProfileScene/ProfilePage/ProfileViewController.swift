@@ -20,6 +20,7 @@ final class ProfileViewController: UIViewController {
     private var myNFTCount = 0
     private var favoritesNFTCount = 0
     private var websiteAdres = ""
+    private let placeholderImage = UIImage(systemName: "person.circle")
     private let profileService = ProfileService.shared
     
     private lazy var editButton: UIBarButtonItem = {
@@ -36,11 +37,13 @@ final class ProfileViewController: UIViewController {
         image.layer.cornerRadius = 35
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
+        image.image = placeholderImage
         return image
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.text = "Name"
         label.font = UIFont.sfProBold22
         label.textColor = UIColor(named: "ypBlack")
         return label
@@ -48,6 +51,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
+        label.text = "bio"
         label.font = UIFont.sfProRegular13
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -58,6 +62,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var siteLabel: UILabel = {
         let label = UILabel()
+        label.text = "Site"
         label.font = UIFont.sfProRegular15
         label.textColor = UIColor(named: "ypBlueUn")
         let action = UITapGestureRecognizer(
