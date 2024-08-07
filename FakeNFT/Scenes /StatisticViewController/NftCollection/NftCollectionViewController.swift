@@ -85,7 +85,7 @@ final class NftCollectionViewController: UIViewController {
         ])
     }
     
-    private func reloadNfts() {
+    private func reloadNfts(){
         ProgressHUD.show()
         for id in nftsId {
             statisticNetworkServise.fetchNft(id: id) { [weak self] result in
@@ -140,8 +140,7 @@ extension NftCollectionViewController: UICollectionViewDataSource, UICollectionV
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
     }
 }
 
@@ -179,7 +178,7 @@ extension NftCollectionViewController: NftCollectionViewCellDelegate {
         else { return }
         let isCart = defaults.bool(forKey: "isCart \(nfts[indexPath.item].id)")
         if isCart {
-            //TODO заменить defaults на реально используемое в эпике Корзина(при добавлении в Корзину)
+            //TODO заменить defaults на реально используемое в эпике Корзина(при добавлении в корзину)
             defaults.set(false, forKey: "isCart \(nfts[indexPath.item].id)")
             cell.updateCartButton(image: UIImage(named: "emptyCart") ?? UIImage())
         } else {

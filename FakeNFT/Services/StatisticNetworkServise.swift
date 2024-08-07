@@ -58,7 +58,7 @@ final class StatisticNetworkServise {
                 }
                 return
             }
-            if let httpResponce = response as? HTTPURLResponse, httpResponce.statusCode == 200 {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 do {
                     let decoder = JSONDecoder()
                     let nft = try decoder.decode(NftStatistic.self, from: data)
