@@ -447,12 +447,9 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				0038BE3F2C5D0D8000A9327B /* Payment */,
 				0038BE272C4BB72F00A9327B /* Basket */,
-=======
 				747BB2B52C5294C600ED4205 /* ProfileScene */,
->>>>>>> profile
 				E1A1B9D82AA01C9700C3AFBC /* TabBarController */,
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
@@ -836,25 +833,18 @@
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				006276082C5E1709006046F9 /* BasketSortStorage.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
-<<<<<<< HEAD
 				006275F62C5D19AA006046F9 /* PaymentViewController.swift in Sources */,
-=======
 				747BB2D62C5B9A2400ED4205 /* EditProfile.swift in Sources */,
->>>>>>> profile
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
 				747BB2D42C53FCCC00ED4205 /* UIFont+Extension.swift in Sources */,
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
-<<<<<<< HEAD
 				0038BE392C5C2F7800A9327B /* BasketPresenter.swift in Sources */,
 				0038BE3D2C5CBE9E00A9327B /* OrderRequests.swift in Sources */,
-				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
-				006275FA2C5D30FE006046F9 /* SuccessViewController.swift in Sources */,
-=======
 				747BB2D02C52964600ED4205 /* SpecialRatingView.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
+				006275FA2C5D30FE006046F9 /* SuccessViewController.swift in Sources */,
 				747BB2B42C5293A000ED4205 /* UIColor+Extensions.swift in Sources */,
->>>>>>> profile
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
@@ -870,12 +860,9 @@
 				747BB2BC2C52951800ED4205 /* Profile.swift in Sources */,
 				7486C5862C624D4600A2E7A4 /* UIBlockingProgressHUD.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
-<<<<<<< HEAD
 				0038BE352C5B7AEC00A9327B /* BarBackgroundView.swift in Sources */,
-=======
 				747BB2DC2C5B9B0B00ED4205 /* ProfilePresenter.swift in Sources */,
 				747BB2D82C5B9A4F00ED4205 /* NetworkError.swift in Sources */,
->>>>>>> profile
 				0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */,
 				006275FC2C5D472D006046F9 /* PaymentPresenter.swift in Sources */,
 				0038BE2A2C4BB7A400A9327B /* NFTBasketCell.swift in Sources */,
@@ -893,23 +880,17 @@
 				747BB2E92C5B9C2D00ED4205 /* MyNFTService.swift in Sources */,
 				E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */,
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
-<<<<<<< HEAD
 				0038BE2E2C4BBA2300A9327B /* Rating.swift in Sources */,
-=======
 				747BB2CA2C5295AF00ED4205 /* MyNFTCell.swift in Sources */,
 				747BB2C22C52956500ED4205 /* EditProfileViewController.swift in Sources */,
->>>>>>> profile
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				006276002C5D48AE006046F9 /* PaymentRequests.swift in Sources */,
 				0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
-<<<<<<< HEAD
 				0038BE3B2C5CBE0F00A9327B /* BasketModel.swift in Sources */,
 				0038BE442C5D0DEF00A9327B /* СurrencyViewCell.swift in Sources */,
 				006276062C5E161F006046F9 /* BasketSortType.swift in Sources */,
-=======
 				747BB2EF2C5B9E8900ED4205 /* NetworkConstants.swift in Sources */,
->>>>>>> profile
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				747BB2BE2C52953C00ED4205 /* ProfileViewController.swift in Sources */,
 				747BB2ED2C5B9C5C00ED4205 /* URLSession.swift in Sources */,
