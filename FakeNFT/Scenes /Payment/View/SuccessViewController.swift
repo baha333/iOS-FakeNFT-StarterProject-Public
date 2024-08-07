@@ -56,6 +56,11 @@ final class SuccessViewController: UIViewController {
     
     @objc
     private func dismissDidTap() {
-        navigationController?.popToRootViewController(animated: true)
+        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
+        if let tabBarController = UIApplication.shared.windows.first?.rootViewController
+ as? TabBarController {
+            tabBarController.selectedIndex = 0
+        }
     }
 }

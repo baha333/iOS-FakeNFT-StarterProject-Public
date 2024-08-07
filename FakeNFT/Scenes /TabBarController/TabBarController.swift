@@ -29,6 +29,7 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
+        catalogController.hidesBottomBarWhenPushed = false
         
         let basketPresenter = BasketPresenter()
         let basketController = BasketViewController(presenter: basketPresenter)
