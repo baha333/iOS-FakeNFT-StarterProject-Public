@@ -12,6 +12,8 @@ final class NftCollectionViewController: UIViewController {
     private let noNftText = NSLocalizedString("Statistic.nftCollection.noNft", comment: "")
     private let noNftLabel = UILabel()
     private let defaults = UserDefaults.standard
+    private var nftsInOrder = [OrderStat]()
+    private var likes = [LikeStat]()
     
     // MARK: - Initializers
     init(nfts: [String]) {
@@ -28,10 +30,12 @@ final class NftCollectionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YPWhite")
         setupNavBar()
-        if nftsId.isEmpty == false {
+        if !nftsId.isEmpty {
             setupCollectionView()
             setupConstraint()
             reloadNfts()
+            reloadLikes()
+            reloadCart()
         } else {
             showNoNftLabel()
         }
@@ -93,7 +97,6 @@ final class NftCollectionViewController: UIViewController {
                 case .success(let nft):
                     self?.nfts.append(nft)
                     if self?.nfts.count == self?.nftsId.count {
-                        ProgressHUD.dismiss()
                         self?.collectionView.reloadData()
                     }
                 case .failure(let error):
@@ -101,6 +104,64 @@ final class NftCollectionViewController: UIViewController {
                     print("Error: \(error.localizedDescription)")
                     break
                 }
+            }
+        }
+    }
+    
+    private func reloadLikes() {
+        ProgressHUD.show()
+        statisticNetworkServise.fetchLike() { [weak self] result in
+            switch result {
+            case .success(let likes):
+                ProgressHUD.dismiss()
+                self?.likes.append(likes)
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                ProgressHUD.dismiss()
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateLike() {
+        ProgressHUD.show()
+        statisticNetworkServise.updateLike(ids: likes[0]) { [weak self] result in
+            switch result {
+            case .success():
+                ProgressHUD.dismiss()
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                ProgressHUD.dismiss()
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func reloadCart(){
+        ProgressHUD.show()
+        statisticNetworkServise.fetchCart() { [weak self] result in
+            switch result {
+            case .success(let ndtsInOrder):
+                ProgressHUD.dismiss()
+                self?.nftsInOrder.append(ndtsInOrder)
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                ProgressHUD.dismiss()
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateCart(){
+        ProgressHUD.show()
+        statisticNetworkServise.updateCart(ids: nftsInOrder[0]) { [weak self] result in
+            switch result {
+            case .success():
+                ProgressHUD.dismiss()
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                ProgressHUD.dismiss()
+                print("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -125,17 +186,19 @@ extension NftCollectionViewController: UICollectionViewDataSource, UICollectionV
         if let nftURL = URL(string: nfts[indexPath.item].images[0]) {
             cell.updateNftImage(image: nftURL)
         }
-        let isLike = defaults.bool(forKey: "isLike \(nfts[indexPath.item].id)")
-        if isLike {
-            cell.updateLikeButton(image: UIImage(named: "redHeart") ?? UIImage())
-        } else {
-            cell.updateLikeButton(image: UIImage(named: "whiteHeart") ?? UIImage())
+        if !likes.isEmpty {
+            if likes[0].likes.contains(nfts[indexPath.item].id) {
+                cell.updateLikeImage(image: UIImage(named: "redHeart") ?? UIImage())
+            } else {
+                cell.updateLikeImage(image: UIImage(named: "whiteHeart") ?? UIImage())
+            }
         }
-        let isCart = defaults.bool(forKey: "isCart \(nfts[indexPath.item].id)")
-        if isCart {
-            cell.updateCartButton(image: UIImage(named: "crossCart") ?? UIImage())
-        } else {
-            cell.updateCartButton(image: UIImage(named: "emptyCart") ?? UIImage())
+        if !nftsInOrder.isEmpty {
+            if nftsInOrder[0].nfts.contains(nfts[indexPath.item].id) {
+                cell.updateCartButton(image: UIImage(named: "crossCart") ?? UIImage())
+            } else {
+                cell.updateCartButton(image: UIImage(named: "emptyCart") ?? UIImage())
+            }
         }
         return cell
     }
@@ -162,28 +225,36 @@ extension NftCollectionViewController: NftCollectionViewCellDelegate {
     func changeLike(_ cell: NftCollectionViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell)
         else { return }
-        let isLike = defaults.bool(forKey: "isLike \(nfts[indexPath.item].id)")
-        if isLike {
-            //TODO заменить defaults на реально используемое в эпике Профиль(при добавлении в избранное)
-            defaults.set(false, forKey: "isLike \(nfts[indexPath.item].id)")
-            cell.updateLikeButton(image: UIImage(named: "whiteHeart") ?? UIImage())
+        if !likes.isEmpty {
+            if likes[0].likes.contains(nfts[indexPath.item].id) {
+                let deleteNftIndex = likes[0].likes.firstIndex(of: nfts[indexPath.item].id) ?? Int()
+                likes[0].likes.remove(at: deleteNftIndex)
+                updateLike()
+            } else {
+                likes[0].likes.append(nfts[indexPath.item].id)
+                updateLike()
+            }
         } else {
-            defaults.set(true, forKey: "isLike \(nfts[indexPath.item].id)")
-            cell.updateLikeButton(image: UIImage(named: "redHeart") ?? UIImage())
+            nftsInOrder[0].nfts.append(nfts[indexPath.item].id)
+            updateCart()
         }
     }
     
     func changeCart(_ cell: NftCollectionViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell)
         else { return }
-        let isCart = defaults.bool(forKey: "isCart \(nfts[indexPath.item].id)")
-        if isCart {
-            //TODO заменить defaults на реально используемое в эпике Корзина(при добавлении в корзину)
-            defaults.set(false, forKey: "isCart \(nfts[indexPath.item].id)")
-            cell.updateCartButton(image: UIImage(named: "emptyCart") ?? UIImage())
+        if !nftsInOrder.isEmpty {
+            if nftsInOrder[0].nfts.contains(nfts[indexPath.item].id) {
+                let deleteNftIndex = nftsInOrder[0].nfts.firstIndex(of: nfts[indexPath.item].id) ?? Int()
+                nftsInOrder[0].nfts.remove(at: deleteNftIndex)
+                updateCart()
+            } else {
+                nftsInOrder[0].nfts.append(nfts[indexPath.item].id)
+                updateCart()
+            }
         } else {
-            defaults.set(true, forKey: "isCart \(nfts[indexPath.item].id)")
-            cell.updateCartButton(image: UIImage(named: "crossCart") ?? UIImage())
+            nftsInOrder[0].nfts.append(nfts[indexPath.item].id)
+            updateCart()
         }
     }
 }

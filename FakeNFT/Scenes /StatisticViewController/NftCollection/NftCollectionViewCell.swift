@@ -3,8 +3,8 @@ import UIKit
 import Kingfisher
 
 protocol NftCollectionViewCellDelegate: AnyObject {
-    func changeLike(_ cell: NftCollectionViewCell)
     func changeCart(_ cell: NftCollectionViewCell)
+    func changeLike(_ cell: NftCollectionViewCell)
 }
 
 final class NftCollectionViewCell: UICollectionViewCell {
@@ -37,14 +37,13 @@ final class NftCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Actions
-    @objc private func onClickLikeButton() {
-        delegate?.changeLike(self)
-        //TODO добавление в избранное
-    }
     
     @objc private func onClickCartButton() {
         delegate?.changeCart(self)
-        //TODO добавление в корзину
+    }
+    
+    @objc private func onClickLikeButton() {
+        delegate?.changeLike(self)
     }
     
     // MARK: - Public Methods
@@ -75,7 +74,7 @@ final class NftCollectionViewCell: UICollectionViewCell {
         nftImage.kf.setImage(with: image)
     }
     
-    func updateLikeButton(image: UIImage){
+    func updateLikeImage(image: UIImage){
         likeButton.setImage(image, for: .normal)
     }
     
