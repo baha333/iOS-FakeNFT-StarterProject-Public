@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import Kingfisher
 
-
 final class StatisticCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Properties
     private let backgroundContainer = UIView()
